@@ -1,0 +1,14 @@
+﻿@model BakeryApp.Models.IndexViewModel
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-center text-center">
+        <h4>View By Category:</h4>
+        @foreach (var item in Model.Categories) {
+
+                <a asp-controller="Products" asp-action="Index" asp-route-id="@item.ID" class="btn btn-primary m-2">@Html.DisplayFor(modelItem => item.Name)</a>
+
+        }
+
+    </div>
+</div>
+

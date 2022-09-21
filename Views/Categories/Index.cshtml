@@ -1,0 +1,54 @@
+﻿@model IEnumerable<BakeryApp.Models.Category>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Category Catalog";
+}
+
+<h1>Product Categories</h1>
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success m-2">Add New Category</a>
+    </p>
+}
+
+
+<div class="container-fluid padding">
+    <div class="row">
+        <div class="row padding mx-auto">
+
+            @foreach (var item in Model)
+            {
+                <div class="p-4 m-4 col-6 col-md-4 col-lg-3 mx-auto">
+                    <div class="card m-3 mx-auto" style="width: 18rem;">
+
+                    <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fassets.marthastewart.com%2Fstyles%2Fwmax-750%2Fd33%2Fbest-apple-pie-29254_ns_0623-1121%2Fbest-apple-pie-29254_ns_0623-1121_hz.jpg%3Fitok%3D6nE7QC9q&q=60" width="300" height="150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                        <div class="d-flex justify-content-center p-2">
+                            <a asp-controller="Products" asp-action="Index" asp-route-id="@item.ID" class="btn btn-primary">See All Category Products</a>
+                        </div>
+
+                        @if (User.IsInRole("admin"))
+                        {
+                            <div class="d-flex justify-content-center p-2">
+                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary">See Category Details</a>
+                            </div>
+                            <div class="d-flex justify-content-center p-2">
+                                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-success m-2">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger m-2">Delete</a>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    </div>
+</div>

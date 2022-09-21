@@ -1,0 +1,53 @@
+﻿
+@model IndexViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Product Catalog";
+}
+
+<h1>Product Catalog</h1>
+@if (User.IsInRole("admin"))
+{
+<p>
+        <a asp-action="Create" class="btn btn-success m-2">Add New Product</a>
+</p>
+}
+<br />
+@await Html.PartialAsync("/Views/Categories/_ViewByCategory.cshtml")
+<br />
+<div class="container-fluid padding">
+    <div class="row">
+        <div class="row padding mx-auto">
+        @foreach (var item in Model.Products) {
+            <div class="p-4 m-4 col-6 col-md-4 col-lg-3 mx-auto">
+                <div class="card m-3 mx-auto" style="width: 18rem;">
+                    <img src="images/@Html.DisplayFor(modelItem => item.Image)" width="300" height="150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <h3 class="text-center"><b>$ @Html.DisplayFor(modelItem => item.Price)</b></h3>
+                        }
+                        <div class="d-flex justify-content-center p-2">
+
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary">View Product</a>
+                        </div>
+
+                        @if (User.IsInRole("admin"))
+                        {
+                             <div class="d-flex justify-content-center p-2">
+                                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-success m-2">Edit</a>
+                                    <a asp-action="Delete" asp-route-id = "@item.ID" class="btn btn-danger m-2">Delete</a>
+                             </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    </div>
+
+</div>

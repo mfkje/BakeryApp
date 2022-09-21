@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<BakeryApp.Models.Cart>
+
+@{
+    decimal subtotal = 0;
+
+    foreach(Cart m in Model)
+    {
+        subtotal += m.Quantity * m.Product.Price;
+    }
+
+    int totalItems = Model.Sum(x => x.Quantity);
+
+    ViewData["UserId"] = UserManager.GetUserId(User);
+    ViewData["Title"] = "Shopping Cart";
+    ViewData["TotalItems"] = totalItems;
+    ViewData["Subtotal"] = subtotal;
+}
+<div class="row justify-content-center">
+
+        <h1>@ViewData["Title"]</h1>
+        <section class="col-9">
+            @if (Model.Count() == 0)
+            {
+            <h3>Your cart is empty</h3>
+            }
+            @if (SignInManager.IsSignedIn(User))
+            {
+            @if (Model.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="5">
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Quantity)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Price)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        @foreach (var item in Model)
+                        {
+                            <tr class="align-middle">
+
+                                <td >
+                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Product.ID"><img class="my-1" src="~/images/pie1.png" height="100"/></a>
+                                </td>
+                                <td colspan="4">
+                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Product.ID">@Html.DisplayFor(modelItem => item.Product.Name)</a>
+                                </td>                  
+                                <td>
+                                    @*<div class="row">
+                                        <div class="input-group mb-3">
+      
+                                            <button class="btn btn-outline-secondary" type="button">+</button>*@
+               
+                         
+                                            <input type="number" data-uid=@ViewData["UserId"] data-pid=@item.Product.ID class="updateCartQty form-control w-50" value="@item.Quantity" aria-label="" aria-describedby="basic-addon1" min="1">
+                           
+                                     @*       <button class="btn btn-outline-secondary" type="button">-</button>
+                                    
+                                        </div>
+                                    </div>*@
+                                </td>
+                                <td>
+                                    $@Html.DisplayFor(modelItem => item.Product.Price)
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary" asp-controller="Carts" asp-action="Index">Update</a>
+                                </td>
+                                <td>
+
+                                    <form action="/Carts/Delete" method="post">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        @*<input type="hidden" asp-for="ID" />*@
+                                        <input type="hidden" id="ApplicationUserId" name="ApplicationUserId" value=@ViewData["UserId"]>
+                                        <input type="hidden" id="ProductID" name="ProductID" value=@item.Product.ID>
+                                        <div class="form-group">
+                                            <input type="submit" value="Delete" class="btn btn-danger" />
+                                        </div>
+                                    </form>    
+                                </td>
+
+                        </tr>
+                    }
+                        
+                    </tbody>
+                </table>
+                }
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Login">
+                    <button type="button" class="btn btn-warning me-2">Sign in to your account</button>
+                </a>
+                <a asp-area="Identity" asp-page="/Account/Register">
+                    <button type="button" class="btn btn-light">Sign up now</button>
+                </a>
+            }
+        </section>
+        <section class="col-3">
+            @if (Model.Count() > 0)
+            {
+            <div class="card">
+              <div class="card-body py-4">
+                <h5 class="card-title">Cart Summary</h5>
+                <p class="card-text">Subtotal (@ViewData["TotalItems"] items): <strong>$@ViewData["Subtotal"]</strong></p>
+                <a href="#" class="btn btn-warning">Proceed to Checkout</a>
+              </div>
+            </div>
+            }
+        </section>
+
+</div>

@@ -1,0 +1,65 @@
+﻿@model BakeryApp.Models.Contact
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<h1>Contact Us</h1>
+<br />
+<br />
+
+
+<p>Aboussafy's Bakery is a group effort on the parts of Paul Cheung, Xiaotong Zhang and Anthony Aboussafy. We are a small, local business, and use this website to allow our clientele to place pick-up orders for our award winning products.</p>
+
+<p>We focus on breads, pies and cakes. All our products use locally sourced ingredients and top quality materials. That's why the prices are so high.</p>
+
+<br />
+<br />
+<br />
+
+<h3>All pick-up orders will be at our physical location. Feel free to come visit us:</h3>
+
+<br />
+
+<h2>21 275 Rue Lakeshore Road, Sainte-Anne-de-Bellevue, QC H9X 3L9</h2>
+<br />
+<br />
+<p>(If you want to use our internal messaging system though, use the form below.)</p>
+
+<h4>Contact Form</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" type="email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <input asp-for="Message" class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Submit Form" class="btn btn-primary col-12" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (ViewBag.ConfirmMsg != null)
+{
+    <div class="alert alert-success">@ViewBag.ConfirmMsg</div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,67 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    ViewData["Title"] = "Cart";
+}
+<div class="row justify-content-center">
+    <div class="col-10">
+        <section>
+            <h1>@ViewData["Title"]</h1>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <h3>Your Cart is empty</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Product
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                Qty
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*@foreach (var item in Model)*@
+                        
+                            <tr>
+                                <td>
+                                   
+                                </td>
+                                <td>
+                                
+                                </td>
+                                <td>
+                                    
+                                </td>
+                                <td>
+@*                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                                </td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Login">
+                    <button type="button" class="btn btn-warning me-2">Sign in to your account</button>
+                </a>
+                <a asp-area="Identity" asp-page="/Account/Register">
+                    <button type="button" class="btn btn-light">Sign up now</button>
+                </a>
+            }
+
+        </section>
+    </div>
+</div>
